@@ -1,8 +1,8 @@
 exports.commands_list = function (request, response) {
   var connection = request.connection;
-  const { filter } = request.query;
-  const query = filter
-    ? "SELECT * FROM commands WHERE category = " + filter
+  const { category } = request.query;
+  const query = category
+    ? "SELECT * FROM commands WHERE category = " + category
     : "SELECT * FROM commands";
   connection.query(query, function (err, results, fields) {
     if (err) {
@@ -39,7 +39,22 @@ exports.commands_create = function (request, response) {
     created: dateNow,
     modified: dateNow,
   };
-  connection.query("INSERT INTO commands set ? ", command, function (
+
+  /*connection.query(
+    "SELECT COUNT(*) as numero FROM commands WHERE commandname='" +
+      commandname +
+      "'",
+    function (err, results, fields) {
+      if (err) {
+        return response.send("error");
+      }
+      if (results[0].numero > 0) {
+        return response.send("exists");
+      }
+    }
+  );*/
+
+  connection.query("INSERT IGNORE INTO commands set ? ", command, function (
     err,
     rows
   ) {
@@ -106,8 +121,6 @@ exports.commands_update = function (request, response) {
       });
     }
   );
-
-  return response.status(200).json({ status: "ok" });
 };
 
 exports.commands_delete = function (request, response) {
@@ -141,21 +154,29 @@ exports.commands_delete = function (request, response) {
   });
 };
 
-/*function commandExists(request, response, next) {
+/*exports.commandExists = async function (request, response, next) {
   const { commandname } = request.body;
 
-  connection.query(
-    "SELECT EXISTS(select 1 from commands WHERE commandname LIKE " +
+  var connection = request.connection;
+  let exists;
+
+  await connection.query(
+    "SELECT COUNT(*) as numero FROM commands WHERE commandname='" +
       commandname +
-      ")",
+      "'",
     function (err, results, fields) {
-      if (results != null) {
-        return response
-          .status(400)
-          .send("Command with that name already exists");
+      if (err) {
+        return response.send("error");
+      } else {
+        if (results[0].numero > 0) {
+          exists = true;
+          return response.send("exists");
+        } else {
+          exists = false;
+          return response.send("not exists");
+        }
       }
-      console.log(results);
     }
   );
-  return next();
-}*/
+  next();
+};*/

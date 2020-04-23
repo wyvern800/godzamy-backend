@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 var command_controller = require("../controllers/commandController");
+const { commandExists } = require("../controllers/commandController");
 
 // GET commands list.
 router.get("/", command_controller.commands_list);
