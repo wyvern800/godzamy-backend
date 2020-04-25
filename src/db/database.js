@@ -4,11 +4,11 @@ require("dotenv").config();
 var mysql = require("mysql");
 
 var db_config = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: "us-cdbr-iron-east-01.cleardb.net",
+  //port: process.env.DB_PORT,
+  user: "b0f6e3eafa00a8",
+  password: "d0e7be5d",
+  database: "heroku_6cf5ef346353132",
   connectTimeout: 10000, //The milliseconds before a timeout occurs during
   connectionLimit: 10,
   //the initial connection to the MySQL server.
