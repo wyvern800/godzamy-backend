@@ -2,8 +2,10 @@ exports.commands_list = function (request, response) {
   var connection = request.connection;
   const { category } = request.query;
   const query = category
-    ? "SELECT * FROM commands WHERE category = " + category
-    : "SELECT * FROM commands";
+    ? "SELECT * FROM commands WHERE category = " +
+      category +
+      " ORDER BY category, price"
+    : "SELECT * FROM commands ORDER BY category, price";
   connection.query(query, function (err, results, fields) {
     if (err) {
       return response.send({

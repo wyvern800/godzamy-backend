@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 var commandsRouter = require("./routes/commands");
+var categoriesRouter = require("./routes/categories");
 var connection = require("./db/database.js");
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(logRequests); // enable middleware to log
  * Routes declaring
  */
 app.use("/commands", commandsRouter);
+app.use("/categories", categoriesRouter);
 
 function logRequests(request, response, next) {
   const { method, url } = request;
