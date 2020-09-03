@@ -1,3 +1,5 @@
+var path = require("path");
+
 exports.commands_list = function (request, response) {
   var connection = request.connection;
   const { category } = request.query;
